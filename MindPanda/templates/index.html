@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindPanda Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .messages-box {
+            height: calc(100% - 80px);
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 8px 0;
+            word-break: break-word;
+        }
+
+        .user-message {
+            background: #dcf8c6;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: #ffffff;
+        }
+
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            margin: 0 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="chat-container bg-white rounded-xl flex flex-col">
+        <!-- Header -->
+        <div class="bg-green-500 p-4 rounded-t-xl flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/477/477103.png" 
+                     class="w-8 h-8 rounded-full border-2 border-white">
+                <div class="ml-3 text-white">
+                    <h2 class="font-semibold">MindPanda</h2>
+                    <p class="text-xs">Online</p>
+                </div>
+            </div>
+            <a href="https://sahilpatil-codes.github.io/Portfolio/" 
+               class="text-white hover:text-green-100 text-sm"
+               target="_blank">
+               Help
+            </a>
+        </div>
+
+        <!-- Messages -->
+        <div class="messages-box overflow-y-auto p-4 flex-1">
+            <div class="bot-message message-bubble">
+                <p>Hi there! How can I help you today?</p>
+                <span class="text-xs text-gray-500 mt-1 block text-right">00:00</span>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 border-t">
+            <div class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Type a message..." 
+                    class="flex-1 p-2 border rounded-lg focus:outline-none focus:border-green-500"
+                    autocomplete="off"
+                >
+                <button 
+                    onclick="sendMessage()" 
+                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                >
+                    Send
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center p-2 bg-gray-50 text-xs text-gray-600 rounded-b-xl">
+            © 2025 All rights reserved by Sahil Patil.
+        </div>
+    </div>
+
+    <script>
+        const messagesBox = document.querySelector('.messages-box');
+        const messageInput = document.getElementById('messageInput');
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            messageInput.value = '';
+
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ message })
+                });
+                
+                const data = await response.json();
+                addMessage(data.response, 'bot');
+            } catch (error) {
+                addMessage('Please try again...', 'bot');
+            }
+        }
+
+        function addMessage(content, sender) {
+            const timestamp = new Date().toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-bubble ${sender}-message`;
+            messageDiv.innerHTML = `
+                <p>${content}</p>
+                <span class="text-xs text-gray-500 mt-1 block text-right">${timestamp}</span>
+            `;
+
+            messagesBox.appendChild(messageDiv);
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+        }
+
+        // Handle Enter key
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
