@@ -1,4 +1,4 @@
-# MindPanda---Solution-for-mental-stress
+
 # MindPanda - Mental Health Conversation Bot 🤖💬
 
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
