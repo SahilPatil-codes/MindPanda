@@ -41,5 +41,5 @@ If you're in crisis, please contact:
 ### Installation
 1. Clone the repository:
 ```bash
-git clone https://github.com/SahilPatil-codes/MindPanda-Mental Health Conversation Bot.git
+git clone https://github.com/SahilPatil-codes/MindPanda-Mental-Health-Conversation-Bot.git
 cd MindPanda
