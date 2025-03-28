@@ -7,7 +7,7 @@
 
 A compassionate AI chatbot designed to provide supportive conversations and mental health resources, using a hybrid approach of dataset-driven responses and Hugging Face's AI models.
 
-![Chat Interface Preview](https://via.placeholder.com/800x400.png?text=Chat+Interface+Preview)
+![Chat Interface Preview](demo.png)
 
 ## ⚠️ Important Note
 **MindPanda is not a substitute for professional mental health care.**  
